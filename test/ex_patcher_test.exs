@@ -16,7 +16,26 @@ defmodule ExPatcherTest do
       |> ExPatcher.to_string()
       |> String.split("\n")
 
+    source_str = elem(source, 0)
+
     List.myers_difference(a, b)
-    |> IO.inspect(label: "diff")
+    |> Enum.reduce(
+      {nil, source_str},
+      fn
+        {:ins, ins}, {{:del, del}, source_str} ->
+          source_str =
+            Enum.zip(del, ins)
+            |> Enum.reduce(source_str, fn {d, i}, s ->
+              String.replace(s, d, i)
+            end)
+
+          {{:del, del}, source_str}
+
+        a, {_pref, source_str} ->
+          {a, source_str}
+      end
+    )
+    |> elem(1)
+    |> IO.puts()
   end
 end
