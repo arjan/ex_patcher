@@ -6,11 +6,13 @@ defmodule ExPatcher do
   end
 
   def patch_io_chardata_to_string({file, ast}) do
-    {ast, line} = Macro.postwalk(ast, nil, &fix_chardata_to_string/2)
+    Tokenizer.tokenize(file)
 
-    if line do
-      IO.puts("Found at line: #{line}")
-    end
+#    {ast, line} = Macro.postwalk(ast, nil, &fix_chardata_to_string/2)
+#
+#    if line do
+#      IO.puts("Found at line: #{line}")
+#    end
 
     {file, ast}
   end

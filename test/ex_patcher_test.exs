@@ -16,7 +16,7 @@ defmodule ExPatcherTest do
       |> ExPatcher.to_string()
       |> String.split("\n")
 
-    List.myers_difference(a, b)
-    |> IO.inspect(label: "diff")
+    # List.myers_difference(a, b)
+    # |> IO.inspect(label: "diff")
   end
 end
