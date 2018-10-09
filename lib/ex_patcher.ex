@@ -11,7 +11,7 @@ defmodule ExPatcher do
   end
 
   defp fix_chardata_to_string({:., meta, [{:__aliases__, b, [:IO]}, :char_data_to_string]}) do
-    {{:., meta, [{:__aliases__, b, [:IO]}, :chardata_to_string]}}
+    {:., meta, [{:__aliases__, b, [:IO]}, :chardata_to_string]}
   end
 
   defp fix_chardata_to_string(ast) do
