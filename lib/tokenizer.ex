@@ -9,13 +9,12 @@
 #   :whitespace
 #
 defmodule Tokenizer do
-
   def tokenize(text) do
     base_tokenize(text |> String.to_charlist(), :normal, [], &Tokenizer.parse_token/1, [])
   end
 
   def parse_token(current) do
-    IO.write '|' ++ current ++ '|'
+    IO.write('<' ++ current ++ '>')
   end
 
   def base_tokenize([], _state, _current, _fun, _result) do
@@ -29,25 +28,22 @@ defmodule Tokenizer do
   #
   # state: whitespace
   #
+  @whitespace [10, 32]
 
-  def parse_char(32, _result, :whitespace, current, _fun) do
-    {:whitespace, current ++ [32], current}
+  def parse_char(char, _result, :whitespace, current, _fun) when char in @whitespace do
+    {:whitespace, current ++ [char], current}
   end
 
   def parse_char(head, _result, :whitespace, current, fun) do
-    {:normal, [head], fun.(current) }
+    {:normal, [head], fun.(current)}
   end
 
   #
   # state: normal
   #
 
-  def parse_char(10, _result, state, current, fun) do
-    {:whitespace, [10], fun.(current) }
-  end
-
-  def parse_char(32, _result, state, current, fun) do
-    {:whitespace, [32], fun.(current)}
+  def parse_char(char, _result, state, current, fun) when char in @whitespace do
+    {:whitespace, [char], fun.(current)}
   end
 
   def parse_char(head, _result, state, current, _fun) do
